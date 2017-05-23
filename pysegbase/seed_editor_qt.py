@@ -25,10 +25,6 @@ except NameError:
     # Python 3
     QString = str
 
-try:
-except ImportError:
-    # we are using Python3 so QString is not defined
-    QString = type("")
 from PyQt5.QtGui import (QImage, QDialog, QApplication, QSlider, QPushButton,
                          QLabel, QPixmap, QPainter, qRgba, QComboBox, QIcon,
                          QStatusBar, QHBoxLayout, QVBoxLayout, QFrame,
