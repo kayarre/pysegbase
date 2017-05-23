@@ -25,10 +25,11 @@ except NameError:
     # Python 3
     QString = str
 
-from PyQt5.QtGui import (QImage, QDialog, QApplication, QSlider, QPushButton,
-                         QLabel, QPixmap, QPainter, qRgba, QComboBox, QIcon,
-                         QStatusBar, QHBoxLayout, QVBoxLayout, QFrame,
-                         QSizePolicy)
+from PyQt5.QtGui import (QImage, QPixmap, QPainter, qRgba, QIcon)
+from PyQt5.QtWidgets import (QDialog, QApplication, QSlider, QPushButton,
+                             QLabel, QComboBox,
+                             QStatusBar, QHBoxLayout, QVBoxLayout,
+                             QFrame, QSizePolicy)
 
 import logging
 logger = logging.getLogger(__name__)
