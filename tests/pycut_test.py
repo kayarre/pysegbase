@@ -57,7 +57,7 @@ class PycutTest(unittest.TestCase):
         """
         import pysegbase.seed_editor_qt
         import numpy as np
-        from PyQt4.QtGui import QApplication
+        from PyQt5.QtWidgets import QApplication
         app = QApplication(sys.argv)
         data = (np.random.rand(30,31,32) * 100).astype(np.int)
         data[15:40, 13:20, 10:18] += 50

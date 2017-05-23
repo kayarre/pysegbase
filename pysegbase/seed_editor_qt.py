@@ -10,24 +10,29 @@ $ seed_editor_qp.py -f head.mat
 
 # import unittest
 from optparse import OptionParser
+#from PyQt5.QtWidgets import *
 from scipy.io import loadmat
 import numpy as np
 import sys
 from scipy.spatial import Delaunay
 
 
-import PyQt4
-from PyQt4.QtCore import Qt, QSize, SIGNAL
+import PyQt5
+from PyQt5.QtCore import Qt, QSize, pyqtSignal
 try:
-    from PyQt4.QtCore import QString
+    QString = unicode
+except NameError:
+    # Python 3
+    QString = str
+
+try:
 except ImportError:
     # we are using Python3 so QString is not defined
     QString = type("")
-from PyQt4.QtGui import QImage, QDialog,\
-    QApplication, QSlider, QPushButton,\
-    QLabel, QPixmap, QPainter, qRgba,\
-    QComboBox, QIcon, QStatusBar,\
-    QHBoxLayout, QVBoxLayout, QFrame, QSizePolicy
+from PyQt5.QtGui import (QImage, QDialog, QApplication, QSlider, QPushButton,
+                         QLabel, QPixmap, QPainter, qRgba, QComboBox, QIcon,
+                         QStatusBar, QHBoxLayout, QVBoxLayout, QFrame,
+                         QSizePolicy)
 
 import logging
 logger = logging.getLogger(__name__)
@@ -224,6 +229,7 @@ class SliceBox(QLabel):
     """
     Widget for marking reagions of interest in DICOM slices.
     """
+    focus_slider = pyqtSignal()
 
     def __init__(self, sliceSize, grid,
                  mode='seeds'):
@@ -508,11 +514,11 @@ class SliceBox(QLabel):
     def mousePressEvent(self, event):
         if event.button() in self.box_buttons:
             self.drawing = True
-            modifiers = PyQt4.QtGui.QApplication.keyboardModifiers()
+            modifiers = PyQt5.QtWidgets.QApplication.keyboardModifiers()
             shift_offset = 0
-            if modifiers == PyQt4.QtCore.Qt.ShiftModifier:
+            if modifiers == PyQt5.QtCore.Qt.ShiftModifier:
                 shift_offset = BOX_BUTTONS_SEED_SHIFT_OFFSET
-            elif modifiers == PyQt4.QtCore.Qt.ControlModifier:
+            elif modifiers == PyQt5.QtCore.Qt.ControlModifier:
                 # this make seed_mark = 0 when left button is pressed
                 shift_offset = -1
 
@@ -570,7 +576,7 @@ class SliceBox(QLabel):
 
     def enterEvent(self, event):
         self.drawing = False
-        self.emit(SIGNAL('focus_slider'))
+        self.focus_slider.emit()
 
     def setMaskPoints(self, mask):
         self.mask_points = mask
@@ -593,7 +599,7 @@ class SliceBox(QLabel):
         self.scroll_fun = fun
 
     def wheelEvent(self, event):
-        d = event.delta()
+        d = event.angleDelta().y()
         nd = d / abs(d)
         if self.scroll_fun is not None:
             self.scroll_fun(-nd)
@@ -643,7 +649,7 @@ class QTSeedEditor(QDialog):
         self.slice_box = SliceBox(shape[:-1], mgrid,
                                   mode)
         self.slice_box.setScrollFun(self.scrollSlices)
-        self.connect(self.slice_box, SIGNAL('focus_slider'), self.focusSliceSlider)
+        self.slice_box.focus_slider.connect(self.focusSliceSlider)
 
         # sliders
         self.allow_select_slice = True
@@ -1387,7 +1393,7 @@ class QTSeedEditor(QDialog):
         self.saveSliceSeeds()
         self.seeds[self.seeds < 3] = 0
 
-        from PyQt4.QtCore import pyqtRemoveInputHook
+        from PyQt5.QtCore import pyqtRemoveInputHook
         # pyqtRemoveInputHook()
         # import ipdb; ipdb.set_trace()
         self.seeds[(self.contours == 1) & (self.seeds < 3)] = self.BACKGROUND_NOMODEL_SEED_LABEL

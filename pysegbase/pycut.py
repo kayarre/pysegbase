@@ -24,6 +24,7 @@ import numpy as np
 import copy
 import pygco
 # from pygco import cut_from_graph
+# from pygco import cut_general_graph
 
 import sklearn
 import sklearn.mixture
@@ -617,7 +618,7 @@ class ImageGraphCut:
         import time
         start = time.time()
 
-        from PyQt4.QtCore import pyqtRemoveInputHook
+        from PyQt5.QtCore import pyqtRemoveInputHook
         pyqtRemoveInputHook()
         import scipy
         import scipy.ndimage
@@ -635,7 +636,7 @@ class ImageGraphCut:
         sparams_lo.update(self.segparams)
         sparams_hi = copy.copy(sparams_lo)
         # sparams_lo['boundary_penalties_weight'] = (
-        #         sparams_lo['boundary_penalties_weight'] * 
+        #         sparams_lo['boundary_penalties_weight'] *
         #         sparams_lo['block_size'])
         self.segparams = sparams_lo
 
@@ -812,7 +813,7 @@ class ImageGraphCut:
         import time
         start = time.time()
         # Same functionality is in self.seg_data()
-        result_graph = pygco.cut_from_graph(
+        result_graph = pygco.cut_general_graph(
             nlinks,
             unariesalt.reshape(-1, 2),
             pairwise
@@ -964,7 +965,7 @@ class ImageGraphCut:
         Interactive seed setting with 3d seed editor
         """
         from .seed_editor_qt import QTSeedEditor
-        from PyQt4.QtGui import QApplication
+        from PyQt5.QtWidgets import QApplication
         if min_val is None:
             min_val = np.min(self.img)
 
@@ -996,7 +997,7 @@ class ImageGraphCut:
         Function for manual seed setting. Sets variable seeds and prepares
         voxels for density model.
         :param seeds: ndarray (0 - nothing, 1 - object, 2 - background,
-        3 - object just hard constraints, no model training, 4 - background 
+        3 - object just hard constraints, no model training, 4 - background
         just hard constraints, no model training)
         """
         if self.img.shape != seeds.shape:
@@ -1365,7 +1366,7 @@ class ImageGraphCut:
         # pairwise)
         import time
         start = time.time()
-        result_graph = pygco.cut_from_graph(
+        result_graph = pygco.cut_general_graph(
             nlinks,
             unariesalt.reshape(-1, 2),
             pairwise

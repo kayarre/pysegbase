@@ -133,7 +133,7 @@ class DicomReader():
                             # t_app = PyQt4.QtGui.QWidget(sys.argv)
                             print(qt_app)
 
-                        from PyQt4.QtGui import QInputDialog
+                        from PyQt5.QtWidgets import QInputDialog
                         # bins = ', '.join([str(ii) for ii in bins])
                         sbins = [str(ii) for ii in bins]
                         snstring, ok = \
@@ -591,7 +591,7 @@ class DicomReader():
 
 
 def get_dcmdir_qt(app=False, directory=''):
-    from PyQt4.QtGui import QFileDialog, QApplication
+    from PyQt5.QtGui import QFileDialog, QApplication
     if app:
         dcmdir = QFileDialog.getExistingDirectory(
             caption='Select DICOM Folder',
